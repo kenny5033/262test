@@ -21,8 +21,32 @@ router.get('/players/:id', readPlayer);
 router.put('/players/:id', updatePlayer);
 router.post('/players', createPlayer);
 router.delete('/players/:id', deletePlayer);
+router.get("/games", readGames);
+router.get("/hotels", readHotels);
 
 app.use(router);
+
+// New Stuff for homework 3
+
+function readGames(req, res, next) {
+  db.many("SELECT * FROM playergame, game, player WHERE gameid = game.id AND playerid = player.id;")
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      next(err);
+    });
+}
+
+function readHotels(req, res, next) {
+  db.many("SELECT * FROM playergamehotels, propertylocation WHERE propertyname = hotellocation;")
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      next(err);
+    });
+}
 
 // Implement the CRUD operations.
 function returnDataOr404(res, data) {
@@ -88,4 +112,3 @@ function deletePlayer(req, res, next) {
 }
 
 module.exports = app;
-
